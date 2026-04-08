@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('slot_id')->constrained('slots');
             $table->string('status', 32);
-            $table->string('idempotency_key', 32)->unique();
+            $table->uuid('idempotency_key')->unique();
             $table->timestamp('expires_at');
             $table->timestamps();
         });

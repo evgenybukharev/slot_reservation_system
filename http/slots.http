@@ -2,6 +2,8 @@ GET http://127.0.0.1:8080/slots/availability
 
 ###
 POST http://127.0.0.1:8080/slots/1/hold
+Content-Type: application/json
+Idempotency-Key: {{$random.uuid}}
 
 ###
 POST http://127.0.0.1:8080/holds/1/confirm
