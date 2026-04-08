@@ -29,7 +29,12 @@ class HoldController extends Controller
 
     public function confirmHold(int $id)
     {
-        return ['ok'];
+        try {
+            return $this->service->confirmHold($id);
+        } catch (\Throwable $exception) {
+            return response()->json(['error' => true, 'message' => $exception->getMessage()], $exception->getCode() ?: 500);
+        }
+
     }
 
     public function deleteHold(int $id)
