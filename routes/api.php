@@ -8,4 +8,4 @@ Route::get('/slots/availability', [AvailabilityController::class, 'getAvailabili
 
 Route::post('/slots/{id}/hold', [HoldController::class, 'createHold']);
 Route::post('/holds/{id}/confirm', [HoldController::class, 'confirmHold']);
-Route::delete('/holds/{id}', [HoldController::class, 'deleteHold']);
+Route::delete('/holds/{id}', [HoldController::class, 'cancelHold']);

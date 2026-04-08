@@ -37,8 +37,12 @@ class HoldController extends Controller
 
     }
 
-    public function deleteHold(int $id)
+    public function cancelHold(int $id)
     {
-        return ['ok'];
+        try {
+            return $this->service->cancelHold($id);
+        } catch (\Throwable $exception) {
+            return response()->json(['error' => true, 'message' => $exception->getMessage()], $exception->getCode() ?: 500);
+        }
     }
 }

@@ -106,6 +106,8 @@ class SlotService
     }
 
     /**
+     * Подтверждение записи
+     *
      * @param int $id
      *
      * @return Hold
@@ -118,13 +120,13 @@ class SlotService
             $hold = Hold::query()->lockForUpdate()->findOrFail($id);
 
             if ($hold->status !== 'held') {
-                throw new \Exception('Hold already confirmed', 409);
+                throw new \Exception('Hold not in held status', 409);
             }
 
             $now = now();
-            $expires=Carbon::parse($hold->expires_at);
+            $expires = Carbon::parse($hold->expires_at);
 
-            if ($expires && $now>$expires) {
+            if ($expires && $now > $expires) {
                 throw new \Exception('Hold expired', 409);
             }
 
@@ -137,6 +139,39 @@ class SlotService
             $slot->decrement('remaining');
 
             $hold->update(['status' => 'confirmed']);
+
+            Cache::forget(self::CACHE_KEY_SLOTS_AVAILABILITY);
+
+            return $hold;
+        });
+    }
+
+    /**
+     * Отмена записи
+     *
+     * @param int $id
+     *
+     * @return Hold
+     * @throws \Throwable
+     */
+    public function cancelHold(int $id): Hold
+    {
+        return DB::transaction(function () use ($id) {
+            $hold = Hold::query()->lockForUpdate()->findOrFail($id);
+
+            if ($hold->status !== 'confirmed') {
+                throw new \Exception('Hold not confirmed status', 409);
+            }
+
+            $slot = Slot::query()->lockForUpdate()->findOrFail($hold->slot_id);
+
+            if ($slot->capacity === $slot->remaining) {
+                throw new \Exception('No capacity', 409);
+            }
+
+            $slot->increment('remaining');
+
+            $hold->update(['status' => 'cancelled']);
 
             Cache::forget(self::CACHE_KEY_SLOTS_AVAILABILITY);
 
