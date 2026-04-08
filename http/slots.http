@@ -1,0 +1,10 @@
+GET http://127.0.0.1:8080/slots/availability
+
+###
+POST http://127.0.0.1:8080/slots/1/hold
+
+###
+POST http://127.0.0.1:8080/holds/1/confirm
+
+###
+DELETE http://127.0.0.1:8080/holds/1

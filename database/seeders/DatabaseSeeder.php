@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Models\Slot;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -15,5 +14,12 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
+        foreach (range(1, 10) as $item) {
+            $capacity = rand(1, 10);
+            Slot::create([
+                'capacity' => $capacity,
+                'remaining' => $capacity,
+            ]);
+        }
     }
 }
