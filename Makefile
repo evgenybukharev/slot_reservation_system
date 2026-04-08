@@ -30,5 +30,11 @@ flush: ## Comprehensive cleanup (cache + optimize:clear)
 	$(APP_EXEC) php artisan optimize:clear
 	$(APP_EXEC) php artisan cache:clear
 
+schedule: ## Run scheduler once (for testing)
+	$(APP_EXEC) php artisan schedule:run
+
+schedule-work: ## Start scheduler daemon (blocking)
+	$(APP_EXEC) php artisan schedule:work
+
 shell: ## Open shell in app container
 	$(APP_EXEC) bash
