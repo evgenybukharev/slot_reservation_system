@@ -1,12 +1,12 @@
 GET http://127.0.0.1:8080/slots/availability
 
 ###
-POST http://127.0.0.1:8080/slots/4/hold
+POST http://127.0.0.1:8080/slots/5/hold
 Content-Type: application/json
 Idempotency-Key: {{$random.uuid}}
 
 ###
-POST http://127.0.0.1:8080/holds/17/confirm
+POST http://127.0.0.1:8080/holds/18/confirm
 
 ###
-DELETE http://127.0.0.1:8080/holds/17
+DELETE http://127.0.0.1:8080/holds/18
